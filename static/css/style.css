@@ -1,0 +1,10 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div #game {
+    width: 350px;
+    height: 350px;
+}
