@@ -13,13 +13,28 @@
                 </div>
             </div>
             <div class="centered row">
-                <div id="game" class="ui blurring segment">
+                <div id="board" class="ui blurring segment">
                     <canvas id="gameCanvas" width="330px" height="330px">
                     </canvas>
                     <div id="board-dimmer" class="ui active dimmer">
                         <div class="content">
                             <div class="center">
                                 <h2 class="ui inverted header">Esperando…</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="information-area" class="ui right dividing rail">
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <code id="game-code">abcdefg</code>
+                                <a class="ui basic pointing label">
+                                    <i class="game icon"></i>
+                                    Comparte este código con tu
+                                    oponente.
+                                </a>
+                            </div>
+                            <div class="ui green segment">
+                                <p>Estás jugando como la <code id="player-info">X</code>.</p>
                             </div>
                         </div>
                     </div>
@@ -42,6 +57,13 @@
                         <p>Si tienes un código, introdúcelo ahora. De lo contrario,
                         deja el campo en blanco, y te unirás a un nuevo juego
                         automáticamente.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="message-area">
+                <div class="five wide centered column">
+                    <div id="message-element" class="ui info message">
+                        <p id="message-text"></p>
                     </div>
                 </div>
             </div>
