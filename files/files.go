@@ -26,3 +26,10 @@ func WriteGame(id string, gamedata []byte) error {
 	p := filepath.Join(gamedir, filename)
 	return ioutil.WriteFile(p, gamedata, os.FileMode(0644))
 }
+
+// DeleteGame elimina el archivo con el flatbuffer de un juego
+func DeleteGame(id string) error {
+	filename := strings.Join([]string{id, ".gato"}, "")
+	p := filepath.Join(gamedir, filename)
+	return os.Remove(p)
+}

@@ -1,9 +1,20 @@
-let _player;
+let _data = {
+    player: "",
+    code: ""
+}
 
 export function setPlayer(player) {
-    _player = player;
+    _data.player = player;
 }
 
 export function player() {
-    return _player;
+    return _data.player;
+}
+
+export function setCode(code) {
+    _data.code = code;
+}
+
+export function code() {
+    return _data.code;
 }

@@ -50,11 +50,11 @@
 
 	var broker = _interopRequireWildcard(_broker);
 
-	var _ui = __webpack_require__(2);
+	var _ui = __webpack_require__(3);
 
 	var ui = _interopRequireWildcard(_ui);
 
-	var _gamedata = __webpack_require__(3);
+	var _gamedata = __webpack_require__(2);
 
 	var gamedata = _interopRequireWildcard(_gamedata);
 
@@ -90,35 +90,71 @@
 	        ui.setGameCode(msg.code);
 	        ui.setPlayerInfo(msg.player);
 	        gamedata.setPlayer(msg.player);
+	        gamedata.setCode(msg.code);
 	    });
 
 	    broker.socket.on("game started", function (msg) {
-	        var m = JSON.parse(msg);
 	        ui.togglePlayArea();
 	        ui.setMessageNormal();
-	        console.log(m.turn);
-	        if (m.turn == gamedata.player()) {
+	        if (msg.turn == gamedata.player()) {
 	            ui.setMessageText("Es tu turno.");
 	        } else {
 	            ui.setMessageText("Es turno de tu oponente.");
+	            ui.disableBoard();
 	        }
+	    });
+
+	    broker.socket.on("game over", function (msg) {
+	        ui.disableBoard();
+	        if (msg == "Nadie") {
+	            ui.setMessageText("Juego Terminado. Nadie ha ganado.");
+	        } else if (msg == gamedata.player()) {
+	            ui.setMessageSuccess();
+	            ui.setMessageText("Juego terminado. ¡Has ganado!");
+	        } else {
+	            ui.setMessageError();
+	            ui.setMessageText("Juego terminado. Tu oponente ha ganado.");
+	        }
+	    });
+
+	    ui.registerStageClickHandler(function (evt) {
+	        var tile = ui.translatePointToTile({ x: evt.stageX, y: evt.stageY });
+	        broker.attemptMove(tile);
+	    });
+
+	    broker.socket.on("made move", function (movedata) {
+	        ui.drawMove(movedata);
 	    });
 	});
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.socket = undefined;
 	exports.joinGame = joinGame;
+	exports.attemptMove = attemptMove;
+
+	var _gamedata = __webpack_require__(2);
+
+	var gamedata = _interopRequireWildcard(_gamedata);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 	var socket = exports.socket = io();
 
 	function joinGame(code) {
 	    socket.emit('join game', code);
+	}
+
+	function attemptMove(tile) {
+	    var data = { tile: tile, game: gamedata.code() };
+	    socket.emit('try move', data);
 	}
 
 /***/ },
@@ -130,14 +166,54 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.setPlayer = setPlayer;
+	exports.player = player;
+	exports.setCode = setCode;
+	exports.code = code;
+	var _data = {
+	    player: "",
+	    code: ""
+	};
+
+	function setPlayer(player) {
+	    _data.player = player;
+	}
+
+	function player() {
+	    return _data.player;
+	}
+
+	function setCode(code) {
+	    _data.code = code;
+	}
+
+	function code() {
+	    return _data.code;
+	}
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.drawBoard = drawBoard;
+	exports.disableBoard = disableBoard;
+	exports.enableBoard = enableBoard;
 	exports.drawO = drawO;
 	exports.drawX = drawX;
+	exports.registerStageClickHandler = registerStageClickHandler;
+	exports.translatePointToTile = translatePointToTile;
+	exports.drawMove = drawMove;
 	exports.togglePlayArea = togglePlayArea;
 	exports.toggleGameSetupArea = toggleGameSetupArea;
 	exports.showMessageArea = showMessageArea;
 	exports.setMessageText = setMessageText;
 	exports.setMessageNormal = setMessageNormal;
+	exports.setMessageSuccess = setMessageSuccess;
 	exports.setMessageError = setMessageError;
 	exports.showInformationArea = showInformationArea;
 	exports.setGameCode = setGameCode;
@@ -146,22 +222,31 @@
 
 	function drawBoard() {
 	    var lineA = new createjs.Shape();
-	    lineA.graphics.ss(2).s("#101010").mt(110, 0).lt(110, 330);
+	    lineA.graphics.ss(2).s("#101010").mt(110, 0).lt(110, 330).es();
 	    stage.addChild(lineA);
 
 	    var lineB = new createjs.Shape();
-	    lineA.graphics.ss(2).s("#101010").mt(220, 0).lt(220, 330);
+	    lineA.graphics.ss(2).s("#101010").mt(220, 0).lt(220, 330).es();
 	    stage.addChild(lineB);
 
 	    var lineC = new createjs.Shape();
-	    lineA.graphics.ss(2).s("#101010").mt(0, 110).lt(330, 110);
+	    lineA.graphics.ss(2).s("#101010").mt(0, 110).lt(330, 110).es();
 	    stage.addChild(lineC);
 
 	    var lineD = new createjs.Shape();
-	    lineA.graphics.ss(2).s("#101010").mt(0, 220).lt(330, 220);
+	    lineA.graphics.ss(2).s("#101010").mt(0, 220).lt(330, 220).es();
 	    stage.addChild(lineD);
 
 	    stage.update();
+	}
+
+	function disableBoard() {
+	    console.log("disabling board");
+	    stage.mouseEnabled = false;
+	}
+
+	function enableBoard() {
+	    stage.mouseEnabled = true;
 	}
 
 	function drawO(x, y) {
@@ -181,7 +266,76 @@
 	    l2.graphics.ss(3).s("#101010").mt(x + 44, y - 44).lt(x - 44, y + 44);
 	    stage.addChild(l2);
 
-	    stage.update;
+	    stage.update();
+	}
+
+	function registerStageClickHandler(handler) {
+	    stage.on("stagemouseup", handler);
+	}
+
+	function translatePointToTile(point) {
+	    var y = point.y;
+	    var x = point.x;
+
+	    var tile = "";
+
+	    if (y > 0 && y <= 110) {
+	        tile += "A";
+	    }
+	    if (y > 110 && y <= 220) {
+	        tile += "B";
+	    }
+	    if (y > 220 && y < 330) {
+	        tile += "C";
+	    }
+
+	    if (x > 0 && x <= 110) {
+	        tile += "0";
+	    }
+	    if (x > 110 && x <= 220) {
+	        tile += "1";
+	    }
+	    if (x > 220 && x < 330) {
+	        tile += "2";
+	    }
+
+	    return tile;
+	}
+
+	function translateTileToPoint(tile) {
+	    var point = {
+	        x: 0,
+	        y: 0
+	    };
+
+	    var rowLetter = tile.charAt(0);
+	    var row = 0;
+	    var column = Number(tile.charAt(1)) + 1;
+
+	    if (rowLetter == 'A') {
+	        row = 1;
+	    }
+	    if (rowLetter == 'B') {
+	        row = 2;
+	    }
+	    if (rowLetter == 'C') {
+	        row = 3;
+	    }
+
+	    point.x = 110 * column - 55;
+	    point.y = 110 * row - 55;
+
+	    return point;
+	}
+
+	function drawMove(movedata) {
+	    var point = translateTileToPoint(movedata.move);
+	    if (movedata.player == "X") {
+	        drawX(point.x, point.y);
+	    }
+	    if (movedata.player == "O") {
+	        drawO(point.x, point.y);
+	    }
 	}
 
 	function togglePlayArea() {
@@ -206,6 +360,11 @@
 	    $('#message-element').addClass("ui message");
 	}
 
+	function setMessageSuccess() {
+	    $('#message-element').removeClass();
+	    $('#message-element').addClass("ui success message");
+	}
+
 	function setMessageError() {
 	    $('#message-element').removeClass();
 	    $('#message-element').addClass("ui error message");
@@ -223,27 +382,6 @@
 	function setPlayerInfo(letter) {
 	    $('#player-info').empty();
 	    $('#player-info').append(letter);
-	}
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.setPlayer = setPlayer;
-	exports.player = player;
-	var _player = undefined;
-
-	function setPlayer(player) {
-	    _player = player;
-	}
-
-	function player() {
-	    return _player;
 	}
 
 /***/ }

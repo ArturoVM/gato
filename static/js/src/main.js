@@ -32,16 +32,39 @@ $(document).ready(function() {
         ui.setGameCode(msg.code);
         ui.setPlayerInfo(msg.player);
         gamedata.setPlayer(msg.player)
+        gamedata.setCode(msg.code);
     })
 
     broker.socket.on("game started", function(msg) {
-        let m = JSON.parse(msg)
         ui.togglePlayArea();
         ui.setMessageNormal();
-        if (m.turn == gamedata.player()) {
+        if (msg.turn == gamedata.player()) {
             ui.setMessageText("Es tu turno.");
         } else {
             ui.setMessageText("Es turno de tu oponente.");
+            ui.disableBoard();
         }
+    });
+
+    broker.socket.on("game over", function(msg) {
+        ui.disableBoard();
+        if (msg == "Nadie") {
+            ui.setMessageText("Juego Terminado. Nadie ha ganado.");
+        } else if (msg == gamedata.player()) {
+            ui.setMessageSuccess();
+            ui.setMessageText("Juego terminado. ¡Has ganado!");
+        } else {
+            ui.setMessageError();
+            ui.setMessageText("Juego terminado. Tu oponente ha ganado.");
+        }
+    })
+
+    ui.registerStageClickHandler(function(evt) {
+        let tile = ui.translatePointToTile({x: evt.stageX, y: evt.stageY});
+        broker.attemptMove(tile);
+    });
+
+    broker.socket.on("made move", function(movedata) {
+        ui.drawMove(movedata);
     });
 });

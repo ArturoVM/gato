@@ -1,6 +1,10 @@
 package games
 
 import (
+	"errors"
+
+	"strconv"
+
 	"../files"
 	"github.com/google/flatbuffers/go"
 )
@@ -88,6 +92,54 @@ func (g *GameObject) Save() error {
 
 func populateVector(b *flatbuffers.Builder, vec []int32) {
 	for i := 2; i >= 0; i-- {
-		b.PrependUOffsetT(flatbuffers.UOffsetT(vec[i]))
+		b.PrependInt32(vec[i])
 	}
+}
+
+// FindPlayerForID determina a quién corresponde la id
+func (g *GameObject) FindPlayerForID(id string) (string, error) {
+	if g.PlayerO == id {
+		return "O", nil
+	}
+	if g.PlayerX == id {
+		return "X", nil
+	}
+	return "", errors.New("No estás jugando en este juego.")
+}
+
+// PerformMove intenta hacer un movimiento en el tablero
+func (g *GameObject) PerformMove(move string, player string) bool {
+	var playerToken int32
+
+	if player == "O" {
+		playerToken = TokO
+	}
+	if player == "X" {
+		playerToken = TokX
+	}
+
+	row := move[0]
+	column, err := strconv.Atoi(string(move[1]))
+	if err != nil {
+		return false
+	}
+
+	switch row {
+	case 'A':
+		return makeMove(g.A, column, playerToken)
+	case 'B':
+		return makeMove(g.B, column, playerToken)
+	case 'C':
+		return makeMove(g.C, column, playerToken)
+	}
+
+	return false
+}
+
+func makeMove(row []int32, column int, token int32) bool {
+	if row[column] != TokNone {
+		return false
+	}
+	row[column] = token
+	return true
 }
