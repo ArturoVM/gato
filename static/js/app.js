@@ -57,8 +57,14 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	$(document).ready(function () {
-	    ui.initializeUI();
 	    ui.drawBoard();
+
+	    $('#play-form').submit(function (e) {
+	        ui.togglePlayArea();
+	        ui.toggleGameSetupArea();
+	        broker.joinGame($('#code-i').val());
+	        e.preventDefault();
+	    });
 	});
 
 /***/ },
@@ -86,14 +92,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.initializeUI = initializeUI;
 	exports.drawBoard = drawBoard;
-	var stage = undefined;
-
-	function initializeUI() {
-	    stage = new createjs.Stage("gameCanvas");
-	    console.log("created stage");
-	}
+	exports.togglePlayArea = togglePlayArea;
+	exports.toggleGameSetupArea = toggleGameSetupArea;
+	var stage = new createjs.Stage("gameCanvas");
 
 	function drawBoard() {
 	    var lineA = new createjs.Shape();
@@ -113,6 +115,14 @@
 	    stage.addChild(lineD);
 
 	    stage.update();
+	}
+
+	function togglePlayArea() {
+	    $('#board-dimmer').toggleClass("active disabled");
+	}
+
+	function toggleGameSetupArea() {
+	    $('#game-setup-area').fadeToggle();
 	}
 
 /***/ }

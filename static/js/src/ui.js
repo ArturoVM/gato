@@ -1,9 +1,4 @@
-let stage;
-
-export function initializeUI() {
-    stage = new createjs.Stage("gameCanvas");
-    console.log("created stage");
-}
+const stage = new createjs.Stage("gameCanvas");
 
 export function drawBoard() {
     let lineA = new createjs.Shape();
@@ -23,4 +18,12 @@ export function drawBoard() {
     stage.addChild(lineD);
 
     stage.update();
+}
+
+export function togglePlayArea() {
+    $('#board-dimmer').toggleClass("active disabled");
+}
+
+export function toggleGameSetupArea() {
+    $('#game-setup-area').fadeToggle();
 }

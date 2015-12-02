@@ -16,7 +16,7 @@
                 <div id="game" class="ui blurring segment">
                     <canvas id="gameCanvas" width="330px" height="330px">
                     </canvas>
-                    <div class="ui active dimmer">
+                    <div id="board-dimmer" class="ui active dimmer">
                         <div class="content">
                             <div class="center">
                                 <h2 class="ui inverted header">Esperando…</h2>
@@ -25,16 +25,16 @@
                     </div>
                 </div>
             </div>
-            <div id="jugar-row" class="row">
+            <div class="row" id="game-setup-area">
                 <div class="five wide centered column">
-                    <form class="ui form attached fluid segment">
+                    <form id="play-form" class="ui form attached fluid segment">
                         <div class="field">
                             <div class="ui action input">
-                                <input type="text" name="code" placeholder="código…">
-                                <buton class="ui right labeled icon primary button">
+                                <input id="code-i" type="text" name="code" placeholder="código…">
+                                <button type="submit" class="ui right labeled icon primary button">
                                     <i class="game icon"></i>
                                     Jugar
-                                </buton>
+                                </button>
                             </div>
                         </div>
                     </form>
