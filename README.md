@@ -38,6 +38,8 @@ La interfaz está constituida por una combinación de elementos de HTML animados
 
 El backend se encarga de procesar a los jugadores, administrar las conexiones, y ejecutar la lógica de juego.
 
+El código está en spanglish porque así pienso cuando programo :P Pero de ser un problema, puedo ajustarme por completo.
+
 ## Licencias
 
 Este software está distribuido bajo la [licencia MIT](http://opensource.org/licenses/MIT).
