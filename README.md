@@ -14,7 +14,6 @@ Proyecto realizado como prueba técnica para la convocatoria de menteslibres.io.
 * [npm](https://nodejs.org/en/download/)
 * [webpack](https://webpack.github.io/)
 * [Babel](http://babeljs.io/docs/setup/#webpack)
-
 * [flatbuffers](http://google.github.io/flatbuffers/)
 * [go-socket.io](https://github.com/googollee/go-socket.io)
 
