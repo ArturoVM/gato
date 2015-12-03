@@ -2,7 +2,6 @@ package games
 
 import (
 	"errors"
-	"log"
 
 	"strconv"
 
@@ -38,7 +37,6 @@ func LoadGame(id string) (*GameObject, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("data len at load: %d", len(data))
 	game := GetRootAsGame(data, 0)
 	a := make([]byte, 3)
 	for i := 0; i < 2; i++ {
