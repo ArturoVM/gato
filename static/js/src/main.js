@@ -39,15 +39,16 @@ $(document).ready(function() {
         ui.togglePlayArea();
         ui.setMessageNormal();
         if (msg.turn == gamedata.player()) {
+            gamedata.setPlayersTurn(true);
             ui.setMessageText("Es tu turno.");
         } else {
+            gamedata.setPlayersTurn(false);
             ui.setMessageText("Es turno de tu oponente.");
-            ui.disableBoard();
         }
     });
 
     broker.socket.on("game over", function(msg) {
-        ui.disableBoard();
+        gamedata.setPlayersTurn(false);
         if (msg == "Nadie") {
             ui.setMessageText("Juego Terminado. Nadie ha ganado.");
         } else if (msg == gamedata.player()) {
@@ -60,11 +61,22 @@ $(document).ready(function() {
     })
 
     ui.registerStageClickHandler(function(evt) {
+        if (!gamedata.playersTurn()) {
+            return;
+        }
         let tile = ui.translatePointToTile({x: evt.stageX, y: evt.stageY});
         broker.attemptMove(tile);
     });
 
     broker.socket.on("made move", function(movedata) {
+        ui.setMessageNormal();
+        if (movedata.player != gamedata.player()) {
+            gamedata.setPlayersTurn(true);
+            ui.setMessageText("Es tu turno.")
+        } else {
+            gamedata.setPlayersTurn(false);
+            ui.setMessageText("Es turno de tu oponente.");
+        }
         ui.drawMove(movedata);
     });
 });

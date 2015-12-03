@@ -2,6 +2,7 @@ package games
 
 import (
 	"errors"
+	"log"
 
 	"strconv"
 
@@ -64,28 +65,37 @@ func LoadGame(id string) (*GameObject, error) {
 func (g *GameObject) Save() error {
 	bld := flatbuffers.NewBuilder(0)
 	gameID := bld.CreateString(g.ID)
-	playerXID := bld.CreateString(g.PlayerX)
-	playerOID := bld.CreateString(g.PlayerO)
+
 	GameStartAVector(bld, 3)
 	populateVector(bld, g.A)
 	a := bld.EndVector(3)
+
 	GameStartBVector(bld, 3)
 	populateVector(bld, g.B)
 	b := bld.EndVector(3)
-	GameStartBVector(bld, 3)
+
+	GameStartCVector(bld, 3)
 	populateVector(bld, g.C)
 	c := bld.EndVector(3)
+
+	playerOID := bld.CreateString(g.PlayerO)
+	playerXID := bld.CreateString(g.PlayerX)
 
 	GameStart(bld)
 	GameAddId(bld, gameID)
 	GameAddA(bld, a)
 	GameAddB(bld, b)
 	GameAddC(bld, c)
-	GameAddPlayerX(bld, playerXID)
 	GameAddPlayerO(bld, playerOID)
+	GameAddPlayerX(bld, playerXID)
 	game := GameEnd(bld)
 
 	bld.Finish(game)
+
+	bb := bld.Bytes[bld.Head():]
+	gg := GetRootAsGame(bb, 0)
+	log.Printf("last a: %d, last b: %d, last c: %d", gg.A(2), gg.B(2), gg.C(2))
+	log.Printf("len before write: %d", len(bb))
 
 	return files.WriteGame(g.ID, bld.Bytes[bld.Head():])
 }
@@ -118,8 +128,10 @@ func (g *GameObject) PerformMove(move string, player string) bool {
 		playerToken = TokX
 	}
 
-	row := move[0]
-	column, err := strconv.Atoi(string(move[1]))
+	moveRunes := []rune(move)
+
+	row := moveRunes[0]
+	column, err := strconv.Atoi(string(moveRunes[1]))
 	if err != nil {
 		return false
 	}

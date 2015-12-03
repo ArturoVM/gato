@@ -2,6 +2,7 @@ package files
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -18,6 +19,7 @@ func OpenGame(id string) ([]byte, error) {
 
 // WriteGame escribe un slice de bytes a un archivo
 func WriteGame(id string, gamedata []byte) error {
+	log.Printf("len during write: %d", len(gamedata))
 	err := os.MkdirAll(gamedir, os.FileMode(0755))
 	if err != nil {
 		return err
@@ -32,4 +34,15 @@ func DeleteGame(id string) error {
 	filename := strings.Join([]string{id, ".gato"}, "")
 	p := filepath.Join(gamedir, filename)
 	return os.Remove(p)
+}
+
+// GameExists verifica que un juego exista
+func GameExists(id string) bool {
+	filename := strings.Join([]string{id, ".gato"}, "")
+	p := filepath.Join(gamedir, filename)
+	_, err := os.Stat(p)
+	if err != nil {
+		return false
+	}
+	return true
 }

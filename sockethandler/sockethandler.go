@@ -28,7 +28,9 @@ func regCommands(socket socketio.Socket) {
 func handleDisconnection(socket socketio.Socket) {
 	log.Println("cliente desconectado")
 	for _, room := range socket.Rooms() {
-		gameOver(socket, room, "Nadie")
+		if files.GameExists(room) {
+			gameOver(socket, room, "Nadie")
+		}
 	}
 }
 
@@ -77,6 +79,11 @@ func handleMove(socket socketio.Socket, move games.Move) {
 	result["move"] = move.Tile
 	result["player"] = player
 	madeMove(socket, game.ID, result)
+	// checar condición de victoria
+	if games.CheckVictory(move.Tile, game) {
+		gameOver(socket, game.ID, player)
+		files.DeleteGame(game.ID)
+	}
 }
 
 func gameStarted(socket socketio.Socket, id string) {

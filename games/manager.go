@@ -6,7 +6,18 @@ import (
 	"fmt"
 	"math/big"
 	"os"
+	"strconv"
 	"strings"
+)
+
+type diagCase int
+
+const (
+	topLeft diagCase = iota
+	topRight
+	center
+	bottomLeft
+	bottomRight
 )
 
 // TryJoinGame intenta unirse a un juego existente, o crear uno nuevo
@@ -69,4 +80,121 @@ func generateID() (string, error) {
 	}
 	id := base64.URLEncoding.EncodeToString(numericID.Bytes())
 	return id, nil
+}
+
+// CheckVictory verifica si el último movimiento es ganador
+func CheckVictory(tile string, game *GameObject) bool {
+	tileRunes := []rune(tile)
+	rowRune := tileRunes[0]
+	var rowNum int
+	var row []int32
+	columnNum, err := strconv.Atoi(string(tileRunes[1]))
+	if err != nil {
+		return false
+	}
+
+	switch rowRune {
+	case 'A':
+		rowNum = 0
+		row = game.A
+	case 'B':
+		rowNum = 1
+		row = game.B
+	case 'C':
+		rowNum = 2
+		row = game.C
+	}
+
+	if checkRow(row, row[columnNum]) {
+		return true
+	}
+
+	if checkColumn(game, columnNum, row[columnNum]) {
+		return true
+	}
+
+	if shouldCheckDiag(columnNum, rowNum) {
+		return checkDiag(game, columnNum, rowNum, row[columnNum])
+	}
+
+	return false
+}
+
+func checkRow(row []int32, token int32) bool {
+	if row[0] == token && row[1] == token && row[2] == token {
+		return true
+	}
+	return false
+}
+
+func checkColumn(game *GameObject, col int, token int32) bool {
+	if game.A[col] == token && game.B[col] == token && game.C[col] == token {
+		return true
+	}
+	return false
+}
+
+func checkDiag(game *GameObject, x, y int, token int32) bool {
+	diag := whichDiagTile(x, y)
+	switch diag {
+	case topLeft, bottomRight:
+		return checkBackSlash(game, token)
+	case topRight, bottomLeft:
+		return checkSlash(game, token)
+	case center:
+		return checkSlash(game, token) || checkBackSlash(game, token)
+	}
+	return false
+}
+
+func checkSlash(game *GameObject, token int32) bool {
+	if game.A[2] == token && game.B[1] == token && game.C[0] == token {
+		return true
+	}
+	return false
+}
+
+func checkBackSlash(game *GameObject, token int32) bool {
+	if game.A[0] == token && game.B[1] == token && game.C[2] == token {
+		return true
+	}
+	return false
+}
+
+func shouldCheckDiag(x, y int) bool {
+	if x == 0 && y == 0 {
+		return true
+	}
+	if x == 0 && y == 2 {
+		return true
+	}
+	if x == 2 && y == 0 {
+		return true
+	}
+	if x == 2 && y == 2 {
+		return true
+	}
+	if x == 1 && y == 1 {
+		return true
+	}
+	return false
+}
+
+func whichDiagTile(x, y int) diagCase {
+	if x == 0 && y == 0 {
+		return topLeft
+	}
+	if x == 0 && y == 2 {
+		return bottomLeft
+	}
+	if x == 2 && y == 0 {
+		return topRight
+	}
+	if x == 2 && y == 2 {
+		return bottomRight
+	}
+	if x == 1 && y == 1 {
+		return center
+	}
+	return center
 }

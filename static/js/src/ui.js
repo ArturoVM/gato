@@ -21,7 +21,6 @@ export function drawBoard() {
 }
 
 export function disableBoard() {
-    console.log("disabling board");
     stage.mouseEnabled = false;
 }
 

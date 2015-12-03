@@ -1,4 +1,4 @@
-import * as gamedata from './gamedata'
+import * as gamedata from "./gamedata.js"
 
 export const socket = io();
 
