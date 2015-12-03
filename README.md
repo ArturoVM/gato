@@ -30,6 +30,10 @@ O bien, si uno cuenta con una máquina \*nix:
     $ cd gato
     $ sh build.sh
 
+## Para Usar
+
+Ejecuta el binario resultante de la compilación con Go, y en tu navegador, ve a [localhost:8080](http://localhost:8080). Puedes abrir dos pestañas con la misma URL para jugar contigo mismo.
+
 ## Arquitectura General
 
 El juego consta de un frontend y un backend, que se comunican por medio de WebSockets, con la implementación de [socket.io](http://socket.io).
