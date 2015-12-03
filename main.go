@@ -18,6 +18,6 @@ func main() {
 
 	http.Handle("/socket.io/", io)
 	http.Handle("/", http.FileServer(http.Dir("./static")))
-	log.Println("Escuchando en localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("Escuchando en localhost:4286")
+	log.Fatal(http.ListenAndServe(":4286", nil))
 }

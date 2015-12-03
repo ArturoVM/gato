@@ -32,7 +32,7 @@ O bien, si uno cuenta con una máquina \*nix:
 
 ## Para Usar
 
-Ejecuta el binario resultante de la compilación con Go, y en tu navegador, ve a [localhost:8080](http://localhost:8080). Puedes abrir dos pestañas con la misma URL para jugar contigo mismo.
+Ejecuta el binario resultante de la compilación con Go, y en tu navegador, ve a [localhost:4286](http://localhost:4286). Puedes abrir dos pestañas con la misma URL para jugar contigo mismo.
 
 ## Arquitectura General
 
