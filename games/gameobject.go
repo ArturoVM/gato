@@ -38,6 +38,7 @@ func LoadGame(id string) (*GameObject, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("data len at load: %d", len(data))
 	game := GetRootAsGame(data, 0)
 	a := make([]int32, 3)
 	for i := 0; i < 2; i++ {
@@ -92,12 +93,9 @@ func (g *GameObject) Save() error {
 
 	bld.Finish(game)
 
-	bb := bld.Bytes[bld.Head():]
-	gg := GetRootAsGame(bb, 0)
-	log.Printf("last a: %d, last b: %d, last c: %d", gg.A(2), gg.B(2), gg.C(2))
-	log.Printf("len before write: %d", len(bb))
+	log.Printf("data len at save: %d", len(bld.FinishedBytes()))
 
-	return files.WriteGame(g.ID, bld.Bytes[bld.Head():])
+	return files.WriteGame(g.ID, bld.FinishedBytes())
 }
 
 func populateVector(b *flatbuffers.Builder, vec []int32) {

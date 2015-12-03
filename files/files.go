@@ -2,7 +2,6 @@ package files
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,14 +18,13 @@ func OpenGame(id string) ([]byte, error) {
 
 // WriteGame escribe un slice de bytes a un archivo
 func WriteGame(id string, gamedata []byte) error {
-	log.Printf("len during write: %d", len(gamedata))
-	err := os.MkdirAll(gamedir, os.FileMode(0755))
+	err := os.MkdirAll(gamedir, 0755)
 	if err != nil {
 		return err
 	}
 	filename := strings.Join([]string{id, ".gato"}, "")
 	p := filepath.Join(gamedir, filename)
-	return ioutil.WriteFile(p, gamedata, os.FileMode(0644))
+	return ioutil.WriteFile(p, gamedata, 0644)
 }
 
 // DeleteGame elimina el archivo con el flatbuffer de un juego
