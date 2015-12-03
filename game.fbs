@@ -1,6 +1,6 @@
 namespace games;
 
-enum Tok : int { None = 0, X, O }
+enum Tok : byte { None = 0, X, O }
 
 table Game {
     id:string;

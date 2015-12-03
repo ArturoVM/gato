@@ -29,11 +29,11 @@ func (rcv *Game) Id() []byte {
 	return nil
 }
 
-func (rcv *Game) A(j int) int32 {
+func (rcv *Game) A(j int) int8 {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
 	if o != 0 {
 		a := rcv._tab.Vector(o)
-		return rcv._tab.GetInt32(a + flatbuffers.UOffsetT(j * 4))
+		return rcv._tab.GetInt8(a + flatbuffers.UOffsetT(j * 1))
 	}
 	return 0
 }
@@ -46,11 +46,11 @@ func (rcv *Game) ALength() int {
 	return 0
 }
 
-func (rcv *Game) B(j int) int32 {
+func (rcv *Game) B(j int) int8 {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(8))
 	if o != 0 {
 		a := rcv._tab.Vector(o)
-		return rcv._tab.GetInt32(a + flatbuffers.UOffsetT(j * 4))
+		return rcv._tab.GetInt8(a + flatbuffers.UOffsetT(j * 1))
 	}
 	return 0
 }
@@ -63,11 +63,11 @@ func (rcv *Game) BLength() int {
 	return 0
 }
 
-func (rcv *Game) C(j int) int32 {
+func (rcv *Game) C(j int) int8 {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(10))
 	if o != 0 {
 		a := rcv._tab.Vector(o)
-		return rcv._tab.GetInt32(a + flatbuffers.UOffsetT(j * 4))
+		return rcv._tab.GetInt8(a + flatbuffers.UOffsetT(j * 1))
 	}
 	return 0
 }
@@ -99,13 +99,13 @@ func (rcv *Game) PlayerX() []byte {
 func GameStart(builder *flatbuffers.Builder) { builder.StartObject(6) }
 func GameAddId(builder *flatbuffers.Builder, id flatbuffers.UOffsetT) { builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(id), 0) }
 func GameAddA(builder *flatbuffers.Builder, a flatbuffers.UOffsetT) { builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(a), 0) }
-func GameStartAVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT { return builder.StartVector(4, numElems, 4)
+func GameStartAVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT { return builder.StartVector(1, numElems, 1)
 }
 func GameAddB(builder *flatbuffers.Builder, b flatbuffers.UOffsetT) { builder.PrependUOffsetTSlot(2, flatbuffers.UOffsetT(b), 0) }
-func GameStartBVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT { return builder.StartVector(4, numElems, 4)
+func GameStartBVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT { return builder.StartVector(1, numElems, 1)
 }
 func GameAddC(builder *flatbuffers.Builder, c flatbuffers.UOffsetT) { builder.PrependUOffsetTSlot(3, flatbuffers.UOffsetT(c), 0) }
-func GameStartCVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT { return builder.StartVector(4, numElems, 4)
+func GameStartCVector(builder *flatbuffers.Builder, numElems int) flatbuffers.UOffsetT { return builder.StartVector(1, numElems, 1)
 }
 func GameAddPlayerO(builder *flatbuffers.Builder, playerO flatbuffers.UOffsetT) { builder.PrependUOffsetTSlot(4, flatbuffers.UOffsetT(playerO), 0) }
 func GameAddPlayerX(builder *flatbuffers.Builder, playerX flatbuffers.UOffsetT) { builder.PrependUOffsetTSlot(5, flatbuffers.UOffsetT(playerX), 0) }

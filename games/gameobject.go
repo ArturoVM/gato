@@ -13,9 +13,9 @@ import (
 // GameObject es la representación de runtime de juego
 type GameObject struct {
 	ID      string
-	A       []int32
-	B       []int32
-	C       []int32
+	A       []byte
+	B       []byte
+	C       []byte
 	PlayerX string
 	PlayerO string
 }
@@ -24,9 +24,9 @@ type GameObject struct {
 func NewGame(id string) *GameObject {
 	return &GameObject{
 		ID:      id,
-		A:       make([]int32, 3),
-		B:       make([]int32, 3),
-		C:       make([]int32, 3),
+		A:       make([]byte, 3),
+		B:       make([]byte, 3),
+		C:       make([]byte, 3),
 		PlayerX: "",
 		PlayerO: "",
 	}
@@ -40,17 +40,17 @@ func LoadGame(id string) (*GameObject, error) {
 	}
 	log.Printf("data len at load: %d", len(data))
 	game := GetRootAsGame(data, 0)
-	a := make([]int32, 3)
+	a := make([]byte, 3)
 	for i := 0; i < 2; i++ {
-		a[i] = game.A(i)
+		a[i] = byte(game.A(i))
 	}
-	b := make([]int32, 3)
+	b := make([]byte, 3)
 	for i := 0; i < 2; i++ {
-		b[i] = game.B(i)
+		b[i] = byte(game.B(i))
 	}
-	c := make([]int32, 3)
+	c := make([]byte, 3)
 	for i := 0; i < 2; i++ {
-		c[i] = game.C(i)
+		c[i] = byte(game.C(i))
 	}
 	return &GameObject{
 		ID:      string(game.Id()),
@@ -65,6 +65,7 @@ func LoadGame(id string) (*GameObject, error) {
 // Save guarda el objeto a un flatbuffer
 func (g *GameObject) Save() error {
 	bld := flatbuffers.NewBuilder(0)
+
 	gameID := bld.CreateString(g.ID)
 
 	GameStartAVector(bld, 3)
@@ -93,14 +94,12 @@ func (g *GameObject) Save() error {
 
 	bld.Finish(game)
 
-	log.Printf("data len at save: %d", len(bld.FinishedBytes()))
-
 	return files.WriteGame(g.ID, bld.FinishedBytes())
 }
 
-func populateVector(b *flatbuffers.Builder, vec []int32) {
+func populateVector(b *flatbuffers.Builder, vec []byte) {
 	for i := 2; i >= 0; i-- {
-		b.PrependInt32(vec[i])
+		b.PrependByte(vec[i])
 	}
 }
 
@@ -117,7 +116,7 @@ func (g *GameObject) FindPlayerForID(id string) (string, error) {
 
 // PerformMove intenta hacer un movimiento en el tablero
 func (g *GameObject) PerformMove(move string, player string) bool {
-	var playerToken int32
+	var playerToken byte
 
 	if player == "O" {
 		playerToken = TokO
@@ -146,7 +145,7 @@ func (g *GameObject) PerformMove(move string, player string) bool {
 	return false
 }
 
-func makeMove(row []int32, column int, token int32) bool {
+func makeMove(row []byte, column int, token byte) bool {
 	if row[column] != TokNone {
 		return false
 	}

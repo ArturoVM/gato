@@ -87,7 +87,7 @@ func CheckVictory(tile string, game *GameObject) bool {
 	tileRunes := []rune(tile)
 	rowRune := tileRunes[0]
 	var rowNum int
-	var row []int32
+	var row []byte
 	columnNum, err := strconv.Atoi(string(tileRunes[1]))
 	if err != nil {
 		return false
@@ -120,21 +120,21 @@ func CheckVictory(tile string, game *GameObject) bool {
 	return false
 }
 
-func checkRow(row []int32, token int32) bool {
+func checkRow(row []byte, token byte) bool {
 	if row[0] == token && row[1] == token && row[2] == token {
 		return true
 	}
 	return false
 }
 
-func checkColumn(game *GameObject, col int, token int32) bool {
+func checkColumn(game *GameObject, col int, token byte) bool {
 	if game.A[col] == token && game.B[col] == token && game.C[col] == token {
 		return true
 	}
 	return false
 }
 
-func checkDiag(game *GameObject, x, y int, token int32) bool {
+func checkDiag(game *GameObject, x, y int, token byte) bool {
 	diag := whichDiagTile(x, y)
 	switch diag {
 	case topLeft, bottomRight:
@@ -147,14 +147,14 @@ func checkDiag(game *GameObject, x, y int, token int32) bool {
 	return false
 }
 
-func checkSlash(game *GameObject, token int32) bool {
+func checkSlash(game *GameObject, token byte) bool {
 	if game.A[2] == token && game.B[1] == token && game.C[0] == token {
 		return true
 	}
 	return false
 }
 
-func checkBackSlash(game *GameObject, token int32) bool {
+func checkBackSlash(game *GameObject, token byte) bool {
 	if game.A[0] == token && game.B[1] == token && game.C[2] == token {
 		return true
 	}
