@@ -12,9 +12,9 @@ import (
 // GameObject es la representación de runtime de juego
 type GameObject struct {
 	ID      string
-	A       []byte
-	B       []byte
-	C       []byte
+	A       []int8
+	B       []int8
+	C       []int8
 	PlayerX string
 	PlayerO string
 }
@@ -23,9 +23,9 @@ type GameObject struct {
 func NewGame(id string) *GameObject {
 	return &GameObject{
 		ID:      id,
-		A:       make([]byte, 3),
-		B:       make([]byte, 3),
-		C:       make([]byte, 3),
+		A:       make([]int8, 3),
+		B:       make([]int8, 3),
+		C:       make([]int8, 3),
 		PlayerX: "",
 		PlayerO: "",
 	}
@@ -38,17 +38,17 @@ func LoadGame(id string) (*GameObject, error) {
 		return nil, err
 	}
 	game := GetRootAsGame(data, 0)
-	a := make([]byte, 3)
-	for i := 0; i < 2; i++ {
-		a[i] = byte(game.A(i))
+	a := make([]int8, 3)
+	for i := 0; i < game.ALength(); i++ {
+		a[i] = game.A(i)
 	}
-	b := make([]byte, 3)
-	for i := 0; i < 2; i++ {
-		b[i] = byte(game.B(i))
+	b := make([]int8, 3)
+	for i := 0; i < game.BLength(); i++ {
+		b[i] = game.B(i)
 	}
-	c := make([]byte, 3)
-	for i := 0; i < 2; i++ {
-		c[i] = byte(game.C(i))
+	c := make([]int8, 3)
+	for i := 0; i < game.CLength(); i++ {
+		c[i] = game.C(i)
 	}
 	return &GameObject{
 		ID:      string(game.Id()),
@@ -95,9 +95,9 @@ func (g *GameObject) Save() error {
 	return files.WriteGame(g.ID, bld.FinishedBytes())
 }
 
-func populateVector(b *flatbuffers.Builder, vec []byte) {
+func populateVector(b *flatbuffers.Builder, vec []int8) {
 	for i := 2; i >= 0; i-- {
-		b.PrependByte(vec[i])
+		b.PrependInt8(vec[i])
 	}
 }
 
@@ -114,7 +114,7 @@ func (g *GameObject) FindPlayerForID(id string) (string, error) {
 
 // PerformMove intenta hacer un movimiento en el tablero
 func (g *GameObject) PerformMove(move string, player string) bool {
-	var playerToken byte
+	var playerToken int8
 
 	if player == "O" {
 		playerToken = TokO
@@ -143,7 +143,7 @@ func (g *GameObject) PerformMove(move string, player string) bool {
 	return false
 }
 
-func makeMove(row []byte, column int, token byte) bool {
+func makeMove(row []int8, column int, token int8) bool {
 	if row[column] != TokNone {
 		return false
 	}
