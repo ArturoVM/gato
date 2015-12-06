@@ -1,15 +1,27 @@
-# PACKAGE DOCUMENTATION
+# Package Documentation
 
-## FUNCTIONS
+## Functions
 
-DeleteGame elimina el archivo con el flatbuffer de un juego
-    func DeleteGame(id string) error
+`DeleteGame` elimina el archivo con el flatbuffer de un juego
 
-GameExists verifica que un juego exista
-    func GameExists(id string) bool
+```golang
+func DeleteGame(id string) error
+```
 
-OpenGame lee un archivo de flatbuffer y lo carga un slice de bytes
-    func OpenGame(id string) ([]byte, error)
+`GameExists` verifica que un juego exista
 
-WriteGame escribe un slice de bytes a un archivo
-    func WriteGame(id string, gamedata []byte) error
+```golang
+func GameExists(id string) bool
+```
+
+`OpenGame` lee un archivo de flatbuffer y lo carga un slice de bytes
+
+```golang
+func OpenGame(id string) ([]byte, error)
+```
+
+`WriteGame` escribe un slice de bytes a un archivo
+
+```golang
+func WriteGame(id string, gamedata []byte) error
+```
