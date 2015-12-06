@@ -198,3 +198,26 @@ func whichDiagTile(x, y int) diagCase {
 	}
 	return center
 }
+
+// CheckBoardFull se encarga de revisar condición de "gato"
+func CheckBoardFull(game *GameObject) bool {
+	full := true
+
+	for i := range game.A {
+		if game.A[i] == TokNone {
+			full = false
+		}
+	}
+	for i := range game.B {
+		if game.B[i] == TokNone {
+			full = false
+		}
+	}
+	for i := range game.C {
+		if game.C[i] == TokNone {
+			full = false
+		}
+	}
+
+	return full
+}

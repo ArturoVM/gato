@@ -82,6 +82,10 @@ func handleMove(socket socketio.Socket, move games.Move) {
 	// checar condición de victoria
 	if games.CheckVictory(move.Tile, game) {
 		gameOver(socket, game.ID, player)
+		return
+	}
+	if games.CheckBoardFull(game) {
+		gameOver(socket, game.ID, "Nadie")
 	}
 }
 
