@@ -8,13 +8,13 @@ El backend escucha en una conexión de sockets de TCP, manejada a través de un 
 
 Cada uno de estos módulos contiene un archivo `doc.md` que se puede leer para conocer sus funciones públicas.
 
-#### `sockethandler`
+#### [`sockethandler`](https://github.com/ArturoVM/gato/blob/master/sockethandler/doc.md)
 
 El módulo `sockethandler` se encarga de definir y mapear funciones a los distintos commandos que el cliente puede emitir.
 
 Procesa una cierta porción de la lógica de juego. Específicamente, se dedica a administrar a los jugadores y sus conexiones.
 
-#### `games`
+#### [`games`](https://github.com/ArturoVM/gato/blob/master/games/doc.md)
 
 Este módulo contiene definiciones de tipos que representan a los juegos en curso, así como funciones que actúan sobre instancias de esos tipos, para modificarlos de diversas maneras. Aquí se hace el procesamiento principal del gameplay.
 
@@ -40,7 +40,7 @@ Sólo define un tipo que se utilizar para representar un movimiento en el tabler
 
 En este módulo se encuentra el gameplay propiamente. Tiene varias funciones para revisar condiciones de victoria (o empate). También se encarga de incorporar jugadores a algún juego dado.
 
-#### `files`
+#### [`files`](https://github.com/ArturoVM/gato/blob/master/files/doc.md)
 
 El módulo files define utilidades que se utilizan para escribir, leer y borrar juegos en el disco.
 

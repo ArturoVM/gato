@@ -36,6 +36,8 @@ Ejecuta el binario resultante de la compilación con Go, y en tu navegador, ve a
 
 ## Arquitectura General
 
+_Nota: Se puede encontrar documentación detallada en [doc.md](https://github.com/ArturoVM/gato/blob/master/doc.md)_
+
 El juego consta de un frontend y un backend, que se comunican por medio de WebSockets, con la implementación de [socket.io](http://socket.io).
 
 La interfaz está constituida por una combinación de elementos de HTML animados con JavaScript, y un elemento `canvas`, en el que se presenta el tablero de juego.
