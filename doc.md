@@ -34,7 +34,7 @@ Así mismo, contiene funciones para traducir entre esta representación, y la re
 
 ##### `move.go`
 
-Sólo define un tipo que se utilizar para representar un movimiento en el tablero de juego.
+Sólo define un tipo que se utiliza para representar un movimiento en el tablero de juego.
 
 ##### `manager.go`
 
