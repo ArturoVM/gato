@@ -29,7 +29,7 @@ func CheckVictory(tile string, game *GameObject) bool
 func TryJoinGame(code string, socketid string) (id, jugador string, err error)
 ```
 
-## TYPES
+## Types
 
 `GameObject` es la representación de runtime de juego
 
