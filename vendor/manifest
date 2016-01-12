@@ -1,0 +1,30 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/google/flatbuffers/go",
+			"repository": "https://github.com/google/flatbuffers",
+			"revision": "63b526db52d562b45c64f1dc6b8185fe8c42c19e",
+			"branch": "master",
+			"path": "/go"
+		},
+		{
+			"importpath": "github.com/googollee/go-engine.io",
+			"repository": "https://github.com/googollee/go-engine.io",
+			"revision": "a66cf68b24e56df0cacdc6041b93742f983a296a",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/googollee/go-socket.io",
+			"repository": "https://github.com/googollee/go-socket.io",
+			"revision": "14bb3d0368089a74cb52164a7a697cf404bda9c6",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/gorilla/websocket",
+			"repository": "https://github.com/gorilla/websocket",
+			"revision": "3986be78bf859e01f01af631ad76da5b269d270c",
+			"branch": "master"
+		}
+	]
+}
