@@ -1,13 +1,8 @@
-FROM golang:latest
+FROM scratch
 
 MAINTAINER Arturo Vergara <hello@arturovm.me>
 
-RUN mkdir -p /gato
-COPY src /gato/src
-COPY vendor /gato/vendor
-RUN go get github.com/constabulary/gb/...
-WORKDIR /gato
-RUN gb build
-COPY static static
-ENTRYPOINT ["bin/gato"]
+COPY static /static
+COPY bin/gato-linux-amd64 /gato
+CMD ["/gato"]
 EXPOSE 4286

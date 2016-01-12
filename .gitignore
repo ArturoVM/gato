@@ -1,2 +1,5 @@
 node_modules
 gamedata
+pkg
+bin
+vendor/src

@@ -1,4 +1,4 @@
 #!/bin/sh
 
-go build -o gato main.go
+env GOOS=linux GOARCH=amd64 gb build
 webpack --progress --colors
